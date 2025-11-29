@@ -63,6 +63,4 @@ jobs:
           allowUpdates: true
           prerelease: true
           removeArtifacts: false
-          allowUpdates: true
-          prerelease: true
-          removeArtifacts: false
+         
