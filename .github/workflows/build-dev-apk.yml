@@ -1,3 +1,4 @@
+# .github/workflows/build.yml
 name: Build & Release Dev APK
 
 on:
@@ -10,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -19,16 +20,17 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Gradle (auto-creates gradlew)
-        uses: gradle/actions/setup-gradle@v3
+      # THIS LINE FIXES EVERYTHING
+      - name: Setup Gradle + create gradlew (if missing)
+        uses: gradle/gradle-build-action@v3
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Upload to GitHub Releases (latest dev)
+      - name: Upload APK to Releases (overwrites "dev")
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "app/build/outputs/apk/debug/app-debug.apk"
+          artifacts: app/build/outputs/apk/debug/app-debug.apk
           tag: dev
           name: Dev Build APK
           body: Latest unsigned dev build – auto-built by GitHub Actions
